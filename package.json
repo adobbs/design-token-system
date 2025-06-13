@@ -1,0 +1,12 @@
+{
+  "name": "design-token-system",
+  "version": "1.0.0",
+  "description": "Design token management system with FastAPI and Style Dictionary",
+  "scripts": {
+    "build-tokens": "style-dictionary build",
+    "dev": "python main.py"
+  },
+  "dependencies": {
+    "style-dictionary": "^5.0.0"
+  }
+}
