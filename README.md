@@ -2,6 +2,12 @@
 
 A FastAPI-based design token management system with Style Dictionary integration.
 
+## Goal
+Provide a reference architecture for build-your-own design token management.
+
+## Project Status
+In progress. Server and client implementations forthcoming.
+
 ## Setup
 
 1. Create virtual environment: `python -m venv venv`
