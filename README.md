@@ -19,7 +19,7 @@ Provide a **production-ready reference architecture** for building your own desi
 - **Mobile optimized** - Adaptive polling with battery-conscious intervals
 - **Admin-friendly** - Live preview capabilities for non-technical users
 
-## 🏗️ Architecture
+## 🏛️ Architecture
 
 ```
 app/
@@ -278,7 +278,7 @@ python -m pytest tests/test_builds.py
 ### Node.js
 - `style-dictionary` - Token transformation
 
-## 🚀 Production Deployment
+## 🚂 Production Deployment
 
 ### Environment Variables
 ```bash
@@ -312,7 +312,11 @@ CMD ["python", "app/main.py"]
 
 ## 📄 License
 
-MIT License - see LICENSE file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🤙 Attribution
+
+If you use this project in your work, a link back to this repository is appreciated but not required.
 
 ## 🙏 Acknowledgments
 
