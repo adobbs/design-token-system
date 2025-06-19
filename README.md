@@ -23,7 +23,7 @@ Provide a **production-ready reference architecture** for building your own desi
 
 ```
 app/
-├── main.py                    # FastAPI app setup
+├── main.py                   # FastAPI app setup
 ├── core/
 │   ├── config.py             # Settings management
 │   ├── update_broadcaster.py # SSE broadcasting system
@@ -31,10 +31,10 @@ app/
 │   └── style_dictionary.py   # Build system integration
 ├── api/
 │   ├── tokens.py             # Token CRUD endpoints
-│   ├── sse.py               # Real-time updates
-│   └── platforms.py         # Build & download endpoints
+│   ├── sse.py                # Real-time updates
+│   └── platforms.py          # Build & download endpoints
 └── models/
-    └── tokens.py            # Data validation models
+    └── tokens.py             # Data validation models
 ```
 
 ## 🚀 Quick Start
