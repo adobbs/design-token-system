@@ -2,10 +2,6 @@
 
 A FastAPI-based design token management system with real-time updates and multi-platform builds.
 
-## 🚧 Status
-
-Project under active development.
-
 ## 🎯 Goal
 
 Provide a **production-ready reference architecture** for building your own design token management system. Features real-time updates via Server-Sent Events, multi-platform builds with Style Dictionary, and a clean, scalable codebase.
