@@ -13,7 +13,7 @@ Provide a **production-ready reference architecture** for building your own desi
 ## ✨ Features
 
 - **Real-time updates** - Server-Sent Events with HTTP polling fallback
-- **Multi-platform builds** - Web (CSS), iOS (Swift), Android (XML)
+- **Multi-platform builds** - Web (CSS), iOS (Swift), Android (XML), Flutter (Dart)
 - **Version tracking** - Clients never miss updates during reconnections
 - **Token validation** - Comprehensive validation for colors, dimensions, and token references
 - **Mobile optimized** - Adaptive polling with battery-conscious intervals
@@ -35,7 +35,83 @@ app/
 │   └── platforms.py          # Build & download endpoints
 └── models/
     └── tokens.py             # Data validation models
+└── tokens/
+    └── tokens.json           # Token storage (W3C DTCG format)
 ```
+
+### Core Components
+`main.py` - **Application Bootstrap**
+
+- **Purpose**: Clean FastAPI setup with minimal configuration
+- **Responsibilities**: App creation, router registration, startup tasks, CORS configuration
+- **Pattern**: Creates app instance, includes routers, handles startup/shutdown
+- **Why separate**: Keeps app setup isolated from business logic, makes testing easier
+
+`config.py` - **Centralized Settings**
+
+- **Purpose**: Single source of truth for all application configuration
+- **Features**: Environment variable support, type validation, default values, path management
+- **Pattern**: Pydantic BaseSettings with validation and environment loading
+- **Why important**: Type-safe config, environment-aware, easy testing overrides
+
+`update_broadcaster.py` - **Real-time Event Distribution**
+
+- **Purpose**: Manages broadcasting token updates to all connected clients
+- **Responsibilities**: SSE connection tracking, update broadcasting, history management, version control
+- **Pattern**: Centralized broadcast system with update history and reconnection support
+- **Why separate**: Business logic isolated from HTTP, reusable across protocols, testable
+
+`token_manager.py` - **Core Business Logic**
+
+- **Purpose**: Pure business logic for token operations (no HTTP dependencies)
+- **Responsibilities**: Token CRUD, file management, change detection, validation, version tracking
+- **Pattern**: Pure functions and classes, no framework dependencies
+- **Why critical**: Testable without HTTP, reusable in CLI/background jobs, reliable core logic
+
+`tokens.json` - **Token Storage**
+
+- **Purpose**: W3C DTCG-compliant token definitions with metadata
+- **Structure**: Hierarchical tokens (primitive → semantic → component), version tracking, platform metadata
+- **Pattern**: JSON file with $schema, $metadata, and nested token objects
+- **Why file-based**: Simple deployment, version control friendly, easy backup/restore
+
+### API Layer
+`tokens.py` - **Token Management API**
+
+- **Purpose**: HTTP endpoints for token CRUD operations
+- **Features**: Path-based token access, batch updates, real-time broadcasts on changes
+- **Pattern**: FastAPI router with dependency injection
+- **Integration**: Calls token_manager for business logic, triggers broadcaster for real-time updates
+
+`sse.py` - **Server-Sent Events API**
+
+- **Purpose**: Real-time updates with HTTP polling fallback
+- **Features**: SSE event streaming, missed update recovery, adaptive polling endpoints
+- **Pattern**: EventSourceResponse generator with connection lifecycle management
+- **Why SSE**: More reliable than WebSockets, mobile-friendly, automatic reconnection
+
+`platforms.py` - **Build System API**
+
+- **Purpose**: Multi-platform token builds and file downloads
+- **Features**: Platform-specific builds, file management, download endpoints, build status tracking
+- **Pattern**: Async subprocess execution with result caching
+- **Integration**: Uses style_dictionary.py for build logic, provides HTTP access to build artifacts
+
+### Build System
+`style_dictionary.py` - **Build System Integration**
+
+- **Purpose**: Transforms JSON tokens into platform-specific files
+- **Features**: Auto-config generation, multi-platform builds, file management, error handling
+- **Pattern**: Async subprocess wrapper with caching and result tracking
+- **Outputs**: CSS, SCSS, Swift, XML, Dart, JSON files for different platforms
+
+### Data Validation
+`models/tokens.py` - **Pydantic Models**
+
+- **Purpose**: Input validation and type safety
+- **Features**: Token validation (colors, dimensions, paths), batch operation limits, build request validation
+- **Pattern**: Pydantic models with custom validators
+- **Why essential**: Prevents invalid data, provides clear error messages, documents API contracts
 
 ## 🚀 Quick Start
 
@@ -83,10 +159,10 @@ GET    /sse/updates/sync       # Polling fallback endpoint
 
 ### Platform Builds
 ```
-POST   /platforms/build        # Build all platforms
-POST   /platforms/build/{platform}  # Build specific platform
-GET    /platforms/{platform}/download  # Download main file (e.g., tokens.css)
-GET    /platforms/{platform}/files    # List all files for platform
+POST   /platforms/build                 # Build all platforms
+POST   /platforms/build/{platform}      # Build specific platform
+GET    /platforms/{platform}/download   # Download main file (e.g., tokens.css)
+GET    /platforms/{platform}/files      # List all files for platform
 ```
 
 ## 💻 Client Usage

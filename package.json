@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Design token management system with FastAPI and Style Dictionary",
   "scripts": {
-    "build-tokens": "style-dictionary build",
+    "build-tokens": "style-dictionary build --config style-dictionary.config.js",
     "dev": "python main.py"
   },
   "dependencies": {
